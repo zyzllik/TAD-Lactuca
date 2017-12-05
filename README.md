@@ -6,7 +6,6 @@ TAD-Lactuca is a tool to predict Topologically Associated Domains(TAD) boundary 
 + The `src` fold contains all scripts, such as data processing, modeling and plot.
 + The `cache` fold contains the main result and some processed the multiple resolution feature signal, such as the  `bin's` length range(`40kb,20kb,10kb`), the `bin's` number range(10,8,6). 
 + The `pic` fold contains the all the picture, such as the ROC Curve, the signal pattern of different feature and so on.
-+ The `log` fold contains some log information, such as the summary of `mlp` model, and the vision of the `Neural Networks`.
 
 ## Dependency
 
