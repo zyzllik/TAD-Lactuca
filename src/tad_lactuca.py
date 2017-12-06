@@ -13,7 +13,7 @@ from src.utils import get_signal_plot
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        print("If you want use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
+        print("If you want to use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
         feature_data = "../cache/E017/feature/bin_10_400kb.xlsx"
         # feature_data = "../cache/E017_new/feature/all.xlsx"
     else:
