@@ -1,5 +1,5 @@
 # TAD-Lactuca
-TAD-Lactuca is a tool to predict Topologically Associated Domains(TAD) boundary using histone marks information. It was written in Python language, using Random Forests(RF) and Multilayer Perception(MLP).
+TAD-Lactuca is a tool to predict Topologically Associating Domains(TAD) boundary using histone marks information. It was written in Python language, using Random Forests(RF) and Multilayer Perception(MLP).
 
 ## Overview
 + The `data` fold contains the origin data (expect the bigwig file, the detail can be found in paper) 
