@@ -17,20 +17,21 @@ def plot_roc_folder(folder, output_name, title):
     for file in file_names:
         if file[:-4:-1] == 'txt':
             path = folder / file
-            if file[0] == 'M':
-                name = file[17:-4] + ' excluded;'
-            else:
+            if 'False' in file:
                 name = 'full model;'
+            else:
+                name = '_'.join(file.split('-')[1:])[:-4] + ' excluded;'  
             plot_roc(ax, path, name)
 
     ax.set_xlabel('False positive rate')
     ax.set_ylabel('False negative rate')
     ax.set_title(title)
-    ax.legend()
+    ax.legend(prop={'size': 6})
+    fig.tight_layout()
     fig.savefig(output_name)
 
 if __name__ == '__main__':
-    folder_path = Path('results_exclude_features/')
-    plot_roc_folder(folder_path, 'roc_reduced_mlp.png', 'ROC comparison of full and reduced models MLP')
+    folder_path = Path('results_exclude_features_MLP/')
+    plot_roc_folder(folder_path, 'results_exclude_features_MLP/roc_reduced_mlp_all_combinations.png', 'ROC comparison of full and reduced models MLP')
 
 

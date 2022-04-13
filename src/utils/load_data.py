@@ -73,7 +73,8 @@ def mlp(feature, exclude = False):
     df = df_y.append(df_n)
 
     if exclude is not False:
-        filter_columns = [col_name for col_name in list(df.columns) if col_name.startswith(exclude)]
+        for excluded_input in exclude:
+            filter_columns = [col_name for col_name in list(df.columns) if col_name.startswith(excluded_input)]
         df = df.drop(filter_columns, axis=1)
     
     index = [i for i in range(4, df.shape[1])]

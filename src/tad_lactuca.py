@@ -4,6 +4,7 @@
 @time: 9/7/17 10:39 AM
 """
 import sys
+import itertools
 
 workspace = './'
 sys.path.append(workspace)
@@ -20,15 +21,20 @@ if __name__ == '__main__':
     else:
         feature_data = sys.argv[1]
 
-    exclude_list = ['E017-H3K4me3', 'E017-H3K4me2', 'E017-CTCF', 'E017-H3K9ac']
+    not_available = ['E017-H3K4me3', 'E017-H3K4me2', 'E017-CTCF', 'E017-H3K9ac']
+    exclude_list = [False]
+    for i in range(1, 5):
+        exclude_list += [j for j in itertools.combinations(not_available, i)]
 
-    # print("MLP...")
+    print("MLP...")
+    for exluded_feature in exclude_list:
+        print(exluded_feature)
+        mlp_model.mlp_result(feature_data, excluded_data=exluded_feature)
+
+    # print("RF...")
     # for exluded_feature in exclude_list:
     #     print(exluded_feature)
-    #     mlp_model.mlp_result(feature_data, excluded_data=exluded_feature)
-
-    print("RF...")
-    rf_model.rf_result(feature_data)
+    #     rf_model.rf_result(feature_data, excluded_data=exluded_feature)
 
 
     # print("Plot...")

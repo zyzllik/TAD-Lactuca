@@ -51,7 +51,11 @@ def mlp_result(feature_data, excluded_data = False):
     y_pred_mlp = clf_mlp.predict_proba(x_test_mlp)[:, 1]
     print(y_pred_mlp[:10])
     fpr_mlp, tpr_mlp, _ = roc_curve(y_test_mlp, y_pred_mlp)
-    np.savetxt("MLP_exclude {}.txt".format(excluded_data), [fpr_mlp, tpr_mlp], fmt='%.8f')
+    if excluded_data is False:
+        file_name = 'MLP_full'
+    else:
+        file_name = 'MLP_exclude_{}.txt'.format('_'.join(excluded_data))
+    np.savetxt("results_exclude_features_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp], fmt='%.8f')
     print('*******' * 3, '\n\t AUC {} = '.format(excluded_data), auc(fpr_mlp, tpr_mlp), '\n', '*******' * 3)
 
 
