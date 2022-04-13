@@ -21,7 +21,7 @@ rf = RandomForestClassifier()
 clf = GridSearchCV(estimator=rf, param_grid=param_search, scoring='roc_auc', cv=5)
 
 
-def rf_result(feature_data):
+def rf_result(feature_data, excluded_data = False):
     (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.mlp(feature=feature_data)
     # param_search = {'n_estimators': range(100, 1000, 100), 'max_depth': range(1, 10), 'min_samples_split': range(2, 10),
     #                 'min_samples_leaf': range(1, 60, 2)}
@@ -42,7 +42,7 @@ def rf_result(feature_data):
     clf_rf.fit(x_train_mlp, y_train_mlp)
     y_pred_rf = clf_rf.predict_proba(x_test_mlp)[:, 1]
     fpr_rf, tpr_rf, _ = roc_curve(y_test_mlp, y_pred_rf)
-    np.savetxt("../E017_new_rf.txt", [fpr_rf, tpr_rf], fmt='%.8f')
+    np.savetxt("results_exclude_features_RF/RF_exclude_{}.txt".format(excluded_data), [fpr_rf, tpr_rf], fmt='%.8f')
     print('*******' * 3, '\n\t AUC = ', auc(fpr_rf, tpr_rf), '\n', '*******' * 3)
     #
     # zz = clf_rf.predict(x_test_mlp)
