@@ -54,8 +54,9 @@ def mlp_result(feature_data, excluded_data = False):
     if excluded_data is False:
         file_name = 'MLP_full'
     else:
-        file_name = 'MLP_exclude_{}.txt'.format('_'.join(excluded_data))
-    np.savetxt("results_exclude_features_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp], fmt='%.8f')
+        file_name = 'MLP_exclude_{}.npz'.format('_'.join(excluded_data))
+    # np.savetxt("results_exclude_features_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp, y_pred_mlp, y_test_mlp], fmt='%.8f')
+    np.savez("results_exclude_features_MLP/{}".format(file_name), fpr = fpr_mlp, tpr = tpr_mlp, pred = y_pred_mlp, target = y_test_mlp)
     print('*******' * 3, '\n\t AUC {} = '.format(excluded_data), auc(fpr_mlp, tpr_mlp), '\n', '*******' * 3)
 
 

@@ -46,7 +46,8 @@ def rf_result(feature_data, excluded_data = False):
         file_name = 'RF_full'
     else:
         file_name = 'RF_exclude_{}.txt'.format('_'.join(excluded_data))
-    np.savetxt("results_exclude_features_RF/{}".format(file_name), [fpr_rf, tpr_rf], fmt='%.8f')
+    # np.savetxt("results_exclude_features_RF/{}".format(file_name), [fpr_rf, tpr_rf, y_pred_rf, y_test_mlp], fmt='%.8f')
+    np.savez("results_exclude_features_RF/{}".format(file_name), fpr = fpr_rf, tpr = tpr_rf, pred = y_pred_rf, target = y_test_mlp)
     print('*******' * 3, '\n\t AUC = ', auc(fpr_rf, tpr_rf), '\n', '*******' * 3)
     #
     # zz = clf_rf.predict(x_test_mlp)

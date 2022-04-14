@@ -26,15 +26,15 @@ if __name__ == '__main__':
     for i in range(1, 5):
         exclude_list += [j for j in itertools.combinations(not_available, i)]
 
-    print("MLP...")
-    for exluded_feature in exclude_list:
-        print(exluded_feature)
-        mlp_model.mlp_result(feature_data, excluded_data=exluded_feature)
-
-    # print("RF...")
+    # print("MLP...")
     # for exluded_feature in exclude_list:
     #     print(exluded_feature)
-    #     rf_model.rf_result(feature_data, excluded_data=exluded_feature)
+    #     mlp_model.mlp_result(feature_data, excluded_data=exluded_feature)
+
+    print("RF...")
+    for exluded_feature in exclude_list:
+        print(exluded_feature)
+        rf_model.rf_result(feature_data, excluded_data=exluded_feature)
 
 
     # print("Plot...")
