@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # exclude_list = [False, ['E017-H3K9ac'], ['E017-H3K27ac'], ['E017-H3K9ac', 'E017-H3K27ac']]
 
     print("MLP...")
-    result_folder_mlp = Path('0503_results_MLP_debug')
+    result_folder_mlp = Path('0506_K562')
     for exluded_feature in exclude_list:
         print(exluded_feature)
         mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, excluded_data=exluded_feature)
