@@ -5,7 +5,7 @@
 """
 
 from keras import backend as K
-from tensorflow.keras.utils import to_categorical
+# from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
@@ -76,6 +76,7 @@ def mlp(feature, exclude = False):
         for excluded_input in exclude:
             filter_columns = [col_name for col_name in list(df.columns) if col_name.startswith(excluded_input)]
         df = df.drop(filter_columns, axis=1)
+        print('columns: {}'.format(df.columns))
     
     index = [i for i in range(4, df.shape[1])]
     data = np.matrix(df.iloc[:, index])

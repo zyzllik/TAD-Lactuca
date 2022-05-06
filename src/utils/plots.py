@@ -3,24 +3,25 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import os
 from sklearn import metrics
+from matplotlib.lines import Line2D
 
 def plot_roc(ax, file_path, data_name):
-    fpr, tpr, _, _ = np.loadtxt(file_path)
-    data_auc = metrics.auc(fpr, tpr)
+    file = np.load(file_path, 'r')
+    data_auc = metrics.auc(file['fpr'],file['tpr'])
     data_name = data_name + ' AUC = {0:.4f}'.format(data_auc)
-    ax.plot(fpr, tpr, label = data_name)
+    ax.plot(file['fpr'], file['tpr'], label = data_name)
 
 def plot_roc_folder(folder, output_name, title):
     file_names = os.listdir(folder)
     fig, ax = plt.subplots()
 
     for file in file_names:
-        if file[:-4:-1] == 'txt':
+        if file[:-4:-1] == 'zpn':
             path = folder / file
-            if 'False' in file:
+            if 'False' in file or 'full' in file:
                 name = 'full model;'
             else:
-                name = '_'.join(file.split('-')[1:])[:-4] + ' excluded;'  
+                name = ', '.join(file.split('.')[0].split('_')[3:]) + ' excluded;'  
             plot_roc(ax, path, name)
 
     ax.set_xlabel('False positive rate')
@@ -61,7 +62,53 @@ def plot_precision_recall_folder(folder, output_name, title):
 
 
 if __name__ == '__main__':
-    folder_path = Path('results_exclude_features_RF/')
-    plot_precision_recall_folder(folder_path, 'results_exclude_features_RF/precision_recall_reduced_rf.png', 'Precision recall curve comparison: RF')
+    folder_path = Path('0503_results_MLP_all') #RF
+    # plot_roc_folder(folder_path, '0502_results_MLP_CTCF_v2/0502_roc_MLP.png', 'ROC comparison: MLP')
+    file_names = os.listdir(folder_path)
+    fig, ax = plt.subplots()
+
+    for file_n in file_names:
+        linewidth = 1.5
+        marker = ','
+        
+        if file_n[:-4:-1] == 'zpn':
+            path = folder_path / file_n
+            if 'False' in file_n or 'full' in file_n:
+                name = 'full model;'
+                # color = 'black'
+                # linewidth = 5
+            else:
+                name = ', '.join(file_n.split('.')[0].split('_')[3:]) + ' excluded;'
+            # if 'CTCF' in file_n:
+            #     if 'H3K9ac' in file_n:
+            #         color = 'cyan'
+            #     else:
+            #         color = 'red'
+            # else:
+            #     if 'H3K9ac' in file_n:
+            #         color = 'blue'
+            #     else:
+            #         color = 'gray'
+          
+            file = np.load(path, 'r')
+            data_auc = metrics.auc(file['fpr'],file['tpr'])
+            data_name = name + ' AUC = {0:.4f}'.format(data_auc)
+
+            # ax.plot(file['fpr'], file['tpr'], label = data_name, color=color, linewidth=linewidth, linestyle=':')
+            ax.plot(file['fpr'], file['tpr'], label = data_name, linewidth=linewidth, linestyle=':')
+
+    ax.set_xlabel('False positive rate')
+    ax.set_ylabel('False negative rate')
+    ax.set_title('ROC comparison: MLP')
+    # custom_lines = [Line2D([0], [0], color='black', lw=4),
+    #                 Line2D([0], [0], color='cyan', lw=4),
+    #                 Line2D([0], [0], color='red', lw=4),
+    #                 Line2D([0], [0], color='blue', lw=4),
+    #                 Line2D([0], [0], color='gray', lw=4)
+    #                 ]
+    # ax.legend(custom_lines, ['Full model', '-CTCF -H3K9ac', '-CTCF', '-H3K9ac', '-other'])
+    ax.legend()
+    fig.set_size_inches(30, 30)
+    fig.savefig(folder_path/'roc_MLP_all_combis_2.png')
 
 

@@ -9,6 +9,7 @@ from keras.layers import Dropout, Dense, Activation, BatchNormalization
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.metrics import roc_curve, auc
 import numpy as np
+from pathlib import Path
 
 from src.utils import load_data
 
@@ -44,20 +45,23 @@ def mlp(input):
     return model
 
 
-def mlp_result(feature_data, excluded_data = False):
+def mlp_result(feature_data, result_folder, excluded_data = False):
     (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.mlp(feature=feature_data, exclude=excluded_data)
     clf_mlp = KerasClassifier(build_fn=mlp, input=x_train_mlp, epochs=epochs, batch_size=batch_size, verbose=0)
-    clf_mlp.fit(x_train_mlp, y_train_mlp, validation_data=(x_test_mlp, y_test_mlp))
+    clf_mlp.fit(x_train_mlp, y_train_mlp, validation_data=(x_test_mlp, y_test_mlp)) # history = 
     y_pred_mlp = clf_mlp.predict_proba(x_test_mlp)[:, 1]
-    print(y_pred_mlp[:10])
     fpr_mlp, tpr_mlp, _ = roc_curve(y_test_mlp, y_pred_mlp)
     if excluded_data is False:
-        file_name = 'MLP_full'
+        file_name = '0502_MLP_full_model.npz'
     else:
-        file_name = 'MLP_exclude_{}.npz'.format('_'.join(excluded_data))
-    # np.savetxt("results_exclude_features_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp, y_pred_mlp, y_test_mlp], fmt='%.8f')
-    np.savez("results_exclude_features_MLP/{}".format(file_name), fpr = fpr_mlp, tpr = tpr_mlp, pred = y_pred_mlp, target = y_test_mlp)
+        hist_mod_list = [name.split('-')[1] for name in excluded_data]
+        file_name = '0502_MLP_exclude_{}'.format('_'.join(hist_mod_list))
+    # np.savetxt("0502_results_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp, y_pred_mlp, y_test_mlp], fmt='%.8f')
+    if not result_folder.exists():
+        result_folder.mkdir()
+    np.savez(result_folder/"{}".format(file_name), fpr = fpr_mlp, tpr = tpr_mlp, pred = y_pred_mlp, target = y_test_mlp)
     print('*******' * 3, '\n\t AUC {} = '.format(excluded_data), auc(fpr_mlp, tpr_mlp), '\n', '*******' * 3)
+
 
 
 if __name__ == '__main__':

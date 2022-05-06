@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 from sklearn.metrics import classification_report, accuracy_score, precision_recall_fscore_support
 from sklearn.model_selection import GridSearchCV
+from pathlib import Path
 
 param_search = {'n_estimator': range(100, 1000, 100), 'max_depth': range(1, 5), 'min_samples_split': range(2, 10),
                 'min_samples_leaf': range(40, 60, 2)}
@@ -21,7 +22,7 @@ rf = RandomForestClassifier()
 clf = GridSearchCV(estimator=rf, param_grid=param_search, scoring='roc_auc', cv=5)
 
 
-def rf_result(feature_data, excluded_data = False):
+def rf_result(feature_data, result_folder, excluded_data = False):
     (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.mlp(feature=feature_data, exclude=excluded_data)
     # param_search = {'n_estimators': range(100, 1000, 100), 'max_depth': range(1, 10), 'min_samples_split': range(2, 10),
     #                 'min_samples_leaf': range(1, 60, 2)}
@@ -43,11 +44,12 @@ def rf_result(feature_data, excluded_data = False):
     y_pred_rf = clf_rf.predict_proba(x_test_mlp)[:, 1]
     fpr_rf, tpr_rf, _ = roc_curve(y_test_mlp, y_pred_rf)
     if excluded_data is False:
-        file_name = 'RF_full'
+        file_name = '0502_RF_full'
     else:
-        file_name = 'RF_exclude_{}.txt'.format('_'.join(excluded_data))
+        hist_mod_list = [name.split('-')[1] for name in excluded_data]
+        file_name = '0502_RF_exclude_{}'.format('_'.join(hist_mod_list))
     # np.savetxt("results_exclude_features_RF/{}".format(file_name), [fpr_rf, tpr_rf, y_pred_rf, y_test_mlp], fmt='%.8f')
-    np.savez("results_exclude_features_RF/{}".format(file_name), fpr = fpr_rf, tpr = tpr_rf, pred = y_pred_rf, target = y_test_mlp)
+    np.savez(result_folder/"{}".format(file_name), fpr = fpr_rf, tpr = tpr_rf, pred = y_pred_rf, target = y_test_mlp)
     print('*******' * 3, '\n\t AUC = ', auc(fpr_rf, tpr_rf), '\n', '*******' * 3)
     #
     # zz = clf_rf.predict(x_test_mlp)
