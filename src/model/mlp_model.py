@@ -45,8 +45,9 @@ def mlp(input):
     return model
 
 
-def mlp_result(feature_data, result_folder, excluded_data = False):
-    (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.mlp(feature=feature_data, exclude=excluded_data)
+def mlp_result(feature_y, feature_n, result_folder, excluded_data = False):
+    # (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.mlp(feature=feature_data, exclude=excluded_data)
+    (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.csv_load(feature_y, feature_n, exclude=excluded_data)
     clf_mlp = KerasClassifier(build_fn=mlp, input=x_train_mlp, epochs=epochs, batch_size=batch_size, verbose=0)
     clf_mlp.fit(x_train_mlp, y_train_mlp, validation_data=(x_test_mlp, y_test_mlp)) # history = 
     y_pred_mlp = clf_mlp.predict_proba(x_test_mlp)[:, 1]

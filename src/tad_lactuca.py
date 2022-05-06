@@ -17,9 +17,10 @@ from utils.plots import *
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        print("If you want to use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
-        feature_data = "cache/E017/feature/bin_10_400kb.xlsx"
-        # feature_data = "../cache/E017_new/feature/all.xlsx"
+        # print("If you want to use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
+        # feature_data = "cache/E017/feature/bin_10_400kb.xlsx"
+        feature_pos= Path("../../../model_input/K562/positives_K562.csv")
+        feature_neg= Path("../../../model_input/K562/negatives_K562.csv")
     else:
         feature_data = sys.argv[1]
 
@@ -37,7 +38,7 @@ if __name__ == '__main__':
     result_folder_mlp = Path('0503_results_MLP_debug')
     for exluded_feature in exclude_list:
         print(exluded_feature)
-        mlp_model.mlp_result(feature_data, result_folder_mlp, excluded_data=exluded_feature)
+        mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, excluded_data=exluded_feature)
     plot_roc_folder(result_folder_mlp, result_folder_mlp/'roc_MLP_all_debug.png', 'ROC comparison: MLP')
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')

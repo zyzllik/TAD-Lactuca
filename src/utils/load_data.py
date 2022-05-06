@@ -64,7 +64,23 @@ def matrix_to_image(data, num, flag):
 #     x_train, x_test, y_train, y_test = train_test_split(data, target, train_size=0.7, random_state=49)
 #     return (x_train, y_train), (x_test, y_test), input_shape
 
+def csv_load(feature_y, feature_n, exclude=False):
 
+    df_y = pd.read_csv(feature_y).fillna(0)
+    df_n = pd.read_csv(feature_n).fillna(0)
+    df = df_y.append(df_n)
+
+    if exclude is not False:
+        for excluded_input in exclude:
+            filter_columns = [col_name for col_name in list(df.columns) if col_name.startswith(excluded_input)]
+        df = df.drop(filter_columns, axis=1)
+        print('columns: {}'.format(df.columns))
+    
+    index = [i for i in range(4, df.shape[1])]
+    data = np.matrix(df.iloc[:, index])
+    target = np.array(df.iloc[:, 3])
+    x_train, x_test, y_train, y_test = train_test_split(data, target, train_size=0.7, random_state=49)
+    return (x_train, y_train), (x_test, y_test)
 
 def mlp(feature, exclude = False):
 
