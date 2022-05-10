@@ -11,8 +11,8 @@ workspace = './'
 sys.path.append(workspace)
 
 
-from src.model import cnn_model, mlp_model, rf_model, svm_model
-from src.utils import get_signal_plot
+from model import cnn_model, mlp_model, rf_model, svm_model
+# from utils import get_signal_plot
 from utils.plots import *
 
 if __name__ == '__main__':
