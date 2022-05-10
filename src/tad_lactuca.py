@@ -19,8 +19,8 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         # print("If you want to use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
         # feature_data = "cache/E017/feature/bin_10_400kb.xlsx"
-        feature_pos= Path("../../../model_input/K562/positives_K562.csv")
-        feature_neg= Path("../../../model_input/K562/negatives_K562.csv")
+        feature_pos= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/K562/positives_K562.csv")
+        feature_neg= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/K562/negatives_K562.csv")
     else:
         feature_data = sys.argv[1]
 
@@ -29,17 +29,17 @@ if __name__ == '__main__':
     #    'E017-CTCF', 'E017-H3K27me3', 'E017-H3K9me3',
     #    'E017-H3K27ac', 'E017-H3K9ac', 'E017-H3K4me1']
     exclude_list = [False]
-    for i in range(1, 5):
-        exclude_list += [j for j in itertools.combinations(not_available, i)]
-    print(exclude_list)
+    # for i in range(1, 5):
+    #     exclude_list += [j for j in itertools.combinations(not_available, i)]
+    # print(exclude_list)
     # exclude_list = [False, ['E017-H3K9ac'], ['E017-H3K27ac'], ['E017-H3K9ac', 'E017-H3K27ac']]
 
     print("MLP...")
-    result_folder_mlp = Path('0506_K562')
+    result_folder_mlp = Path('/net/data.isilon/ag-cherrmann/echernova/model_output/K562')
     for exluded_feature in exclude_list:
         print(exluded_feature)
         mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, excluded_data=exluded_feature)
-    plot_roc_folder(result_folder_mlp, result_folder_mlp/'roc_MLP_all_debug.png', 'ROC comparison: MLP')
+    plot_roc_folder(result_folder_mlp, result_folder_mlp/'0510_mlp_ROC_curve_K562.png', 'ROC comparison: MLP')
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')
     # for exluded_feature in exclude_list:
