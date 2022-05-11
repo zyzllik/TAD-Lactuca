@@ -55,7 +55,7 @@ def mlp_result(feature_y, feature_n, result_folder, excluded_data = False):
     if excluded_data is False:
         file_name = '0502_MLP_full_model.npz'
     else:
-        hist_mod_list = [name.split('-')[1] for name in excluded_data]
+        hist_mod_list = excluded_data
         file_name = '0502_MLP_exclude_{}'.format('_'.join(hist_mod_list))
     # np.savetxt("0502_results_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp, y_pred_mlp, y_test_mlp], fmt='%.8f')
     if not result_folder.exists():
