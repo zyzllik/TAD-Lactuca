@@ -51,7 +51,7 @@ def csv_load(feature_y, feature_n, exclude=False):
 
     if exclude is not False:
         for excluded_input in exclude:
-            filter_columns = [col_name for col_name in list(df.columns) if col_name.startswith(excluded_input)]
+            filter_columns = [col_name for col_name in list(df.columns) if excluded_input in col_name]
         df = df.drop(filter_columns, axis=1)
         print('columns: {}'.format(df.columns))
     
