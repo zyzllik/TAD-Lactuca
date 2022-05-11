@@ -39,7 +39,7 @@ if __name__ == '__main__':
     for exluded_feature in exclude_list:
         print(exluded_feature)
         mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, excluded_data=exluded_feature)
-    plot_roc_folder(result_folder_mlp, result_folder_mlp/'0511_mlp_ROC_curve_K562_only_available_mods.png', 'ROC comparison: MLP')
+    plot_roc_folder(result_folder_mlp, result_folder_mlp/'0511_mlp_ROC_curve_K562_only_available_mods.png', 'ROC comparison: MLP on K562')
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')
     # for exluded_feature in exclude_list:
