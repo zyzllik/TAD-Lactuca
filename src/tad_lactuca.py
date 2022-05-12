@@ -43,7 +43,7 @@ if __name__ == '__main__':
     result_folder_mlp = Path('/net/data.isilon/ag-cherrmann/echernova/model_output/{0}'.format(cell_line))
     for exluded_features in data_list:
         print(exluded_features)
-        mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, hist_list=exluded_features, exclude=exclude)
+        mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, hist_list=exluded_features, exclude=exclude, date=date)
     plot_roc_folder(result_folder_mlp, result_folder_mlp/'{0}_mlp_ROC_curve_{1}_only_available_mods.png'.format(date, cell_line), 'ROC comparison: MLP on {0}'.format(cell_line))
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')
