@@ -50,13 +50,18 @@ def csv_load(feature_y, feature_n, hist_mod_list=False, exclusion=False):
     df = pd.concat([df_y, df_n], axis=0)
 
     if hist_mod_list is not False:
-        for hist_mod in hist_mod_list:
-            if exclusion:
-                drop_columns = [col_name for col_name in list(df.columns) if hist_mod in col_name]
-            elif not exclusion: # aka inclusion
-                drop_columns = [col_name for col_name in list(df.columns) if hist_mod not in col_name]
-        df = df.drop(drop_columns, axis=1)
-        print('columns: {}'.format(df.columns))
+        if exclusion:
+            drop_columns = []
+            for hist_mod in hist_mod_list:
+                drop_columns += [col_name for col_name in list(df.columns) if hist_mod in col_name]
+            df = df.drop(drop_columns, axis=1)
+        elif not exclusion: # aka inclusion
+            keep_columns = []
+            for hist_mod in hist_mod_list:
+                keep_columns += [col_name for col_name in list(df.columns) if hist_mod in col_name]
+            df = df[keep_columns]
+        
+    print('columns: {}'.format(df.columns))
     
     data = np.matrix(df.iloc[:,3:-1])
     target = np.array(df['label'])

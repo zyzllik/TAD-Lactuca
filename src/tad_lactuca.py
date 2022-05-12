@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
 
     exclude = False # the list is included
-    data_list = [False, ['H3K9me3', 'H3K4me1', 'H3K36me3', 'H3K27me3', 'H3K27ac']] # data which is available for microglia
+    data_list = [False, ['H3K9me3', 'H3K4me1', 'H3K36me3', 'H3K27me3', 'H3K27ac', 'CTCF']] # data which is available for microglia
 
     ## all permutations ##
     # not_available = ['E017-H3K4me3', 'E017-H3K4me2', 'E017-CTCF', 'E017-H3K9ac']
