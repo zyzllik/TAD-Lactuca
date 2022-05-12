@@ -19,28 +19,31 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         # print("If you want to use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
         # feature_data = "cache/E017/feature/bin_10_400kb.xlsx"
-        feature_pos= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/K562/positives_K562.csv")
-        feature_neg= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/K562/negatives_K562.csv")
+        cell_line = 'HepG2'
+        feature_pos= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/{0}/positives_{1}.csv".format(cell_line, cell_line))
+        feature_neg= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/{0}/negatives_{1}.csv".format(cell_line, cell_line))
     else:
         feature_data = sys.argv[1]
 
+
+    exclude = False # the list is included
+    data_list = [False, ['H3K9me3', 'H3K4me1', 'H3K36me3', 'H3K27me3', 'H3K27ac']] # data which is available for microglia
+
+    ## all permutations ##
     # not_available = ['E017-H3K4me3', 'E017-H3K4me2', 'E017-CTCF', 'E017-H3K9ac']
-    # not_available = ['E017-H3K4me3', 'E017-H3K4me2', 'E017-H3K36me3',
-    #    'E017-CTCF', 'E017-H3K27me3', 'E017-H3K9me3',
-    #    'E017-H3K27ac', 'E017-H3K9ac', 'E017-H3K4me1']
-    exclude = False # the list 
-    data_list = [False, ['H3K9me3', 'H3K4me1', 'H3K36me3', 'H3K27me3', 'H3K27ac']]
+    # exclude_list = [False]
+    # exclude = True
     # for i in range(1, 5):
     #     exclude_list += [j for j in itertools.combinations(not_available, i)]
     # print(exclude_list)
-    # exclude_list = [False, ['E017-H3K9ac'], ['E017-H3K27ac'], ['E017-H3K9ac', 'E017-H3K27ac']]
+
 
     print("MLP...")
-    result_folder_mlp = Path('/net/data.isilon/ag-cherrmann/echernova/model_output/K562')
+    result_folder_mlp = Path('/net/data.isilon/ag-cherrmann/echernova/model_output/{0}'.format(cell_line))
     for exluded_features in data_list:
         print(exluded_features)
         mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, hist_list=exluded_features, exclude=exclude)
-    plot_roc_folder(result_folder_mlp, result_folder_mlp/'0511_mlp_ROC_curve_K562_only_available_mods.png', 'ROC comparison: MLP on K562')
+    plot_roc_folder(result_folder_mlp, result_folder_mlp/'0511_mlp_ROC_curve_{0}_only_available_mods.png'.format(cell_line), 'ROC comparison: MLP on {0}'.format(cell_line))
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')
     # for exluded_feature in exclude_list:

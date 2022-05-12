@@ -116,3 +116,7 @@ gen
 
 # Results
 results
+
+# Data location
+different_cell_lines_location.xlsx
+~$different_cell_lines_location.xlsx
