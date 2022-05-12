@@ -56,9 +56,10 @@ def csv_load(feature_y, feature_n, hist_mod_list=False, exclusion=False):
                 drop_columns += [col_name for col_name in list(df.columns) if hist_mod in col_name]
             df = df.drop(drop_columns, axis=1)
         elif not exclusion: # aka inclusion
-            keep_columns = []
+            keep_columns = ['chr', 'start', 'end']
             for hist_mod in hist_mod_list:
                 keep_columns += [col_name for col_name in list(df.columns) if hist_mod in col_name]
+            keep_columns += ['label']
             df = df[keep_columns]
         
     print('columns: {}'.format(df.columns))
