@@ -20,6 +20,7 @@ if __name__ == '__main__':
         # print("If you want to use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
         # feature_data = "cache/E017/feature/bin_10_400kb.xlsx"
         cell_line = 'HepG2'
+        date = '0512'
         feature_pos= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/{0}/positives_{1}.csv".format(cell_line, cell_line))
         feature_neg= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/{0}/negatives_{1}.csv".format(cell_line, cell_line))
     else:
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     for exluded_features in data_list:
         print(exluded_features)
         mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, hist_list=exluded_features, exclude=exclude)
-    plot_roc_folder(result_folder_mlp, result_folder_mlp/'0511_mlp_ROC_curve_{0}_only_available_mods.png'.format(cell_line), 'ROC comparison: MLP on {0}'.format(cell_line))
+    plot_roc_folder(result_folder_mlp, result_folder_mlp/'{0}_mlp_ROC_curve_{1}_only_available_mods.png'.format(date, cell_line), 'ROC comparison: MLP on {0}'.format(cell_line))
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')
     # for exluded_feature in exclude_list:
