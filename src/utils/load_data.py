@@ -37,7 +37,7 @@ import numpy as np
 #                  dpi=1000)
 
 
-def csv_load(feature_y, feature_n, exclude=False):
+def csv_load(feature_y, feature_n, hist_mod_list=False, exclusion=False):
 
     df_y = pd.read_csv(feature_y).fillna(0)
     df_n = pd.read_csv(feature_n).fillna(0)
@@ -49,10 +49,13 @@ def csv_load(feature_y, feature_n, exclude=False):
     df_n['label'] = 0
     df = pd.concat([df_y, df_n], axis=0)
 
-    if exclude is not False:
-        for excluded_input in exclude:
-            filter_columns = [col_name for col_name in list(df.columns) if excluded_input in col_name]
-        df = df.drop(filter_columns, axis=1)
+    if hist_mod_list is not False:
+        for hist_mod in hist_mod_list:
+            if exclusion:
+                drop_columns = [col_name for col_name in list(df.columns) if hist_mod in col_name]
+            elif not exclusion: # aka inclusion
+                drop_columns = [col_name for col_name in list(df.columns) if hist_mod not in col_name]
+        df = df.drop(drop_columns, axis=1)
         print('columns: {}'.format(df.columns))
     
     data = np.matrix(df.iloc[:,3:-1])

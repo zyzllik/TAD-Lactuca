@@ -28,7 +28,8 @@ if __name__ == '__main__':
     # not_available = ['E017-H3K4me3', 'E017-H3K4me2', 'E017-H3K36me3',
     #    'E017-CTCF', 'E017-H3K27me3', 'E017-H3K9me3',
     #    'E017-H3K27ac', 'E017-H3K9ac', 'E017-H3K4me1']
-    exclude_list = [False, ['H2AZF', 'H3K4me2', 'H3K4me3', 'H3K79me2', 'H3K9ac', 'H3K9me1', 'H3K9me3', 'H4K20me1']]
+    exclude = False # the list 
+    data_list = [False, ['H3K9me3', 'H3K4me1', 'H3K36me3', 'H3K27me3', 'H3K27ac']]
     # for i in range(1, 5):
     #     exclude_list += [j for j in itertools.combinations(not_available, i)]
     # print(exclude_list)
@@ -36,9 +37,9 @@ if __name__ == '__main__':
 
     print("MLP...")
     result_folder_mlp = Path('/net/data.isilon/ag-cherrmann/echernova/model_output/K562')
-    for exluded_feature in exclude_list:
-        print(exluded_feature)
-        mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, excluded_data=exluded_feature)
+    for exluded_features in data_list:
+        print(exluded_features)
+        mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, hist_list=exluded_features, exclude=exclude)
     plot_roc_folder(result_folder_mlp, result_folder_mlp/'0511_mlp_ROC_curve_K562_only_available_mods.png', 'ROC comparison: MLP on K562')
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')
