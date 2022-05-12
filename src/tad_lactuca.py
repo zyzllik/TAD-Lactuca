@@ -26,25 +26,37 @@ if __name__ == '__main__':
     else:
         feature_data = sys.argv[1]
 
+    ## ---- Test different cell lines --- ##
 
     exclude = False # the list is included
     data_list = [False, ['H3K9me3', 'H3K4me1', 'H3K36me3', 'H3K27me3', 'H3K27ac', 'CTCF']] # data which is available for microglia
-
-    ## all permutations ##
-    # not_available = ['E017-H3K4me3', 'E017-H3K4me2', 'E017-CTCF', 'E017-H3K9ac']
-    # exclude_list = [False]
-    # exclude = True
-    # for i in range(1, 5):
-    #     exclude_list += [j for j in itertools.combinations(not_available, i)]
-    # print(exclude_list)
-
-
     print("MLP...")
     result_folder_mlp = Path('/net/data.isilon/ag-cherrmann/echernova/model_output/{0}'.format(cell_line))
     for exluded_features in data_list:
         print(exluded_features)
-        mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, hist_list=exluded_features, exclude=exclude, date=date)
+        mlp_model.mlp_result((feature_pos, feature_neg), result_folder_mlp, hist_list=exluded_features, exclude=exclude, date=date, input_type='csv')
     plot_roc_folder(result_folder_mlp, result_folder_mlp/'{0}_mlp_ROC_curve_{1}_only_available_mods.png'.format(date, cell_line), 'ROC comparison: MLP on {0}'.format(cell_line))
+    
+    ## ---------------------------------- ##
+
+    ## ---- Test original data with excluded features ---- ##
+    # not_available = ['H3K4me3', 'H3K4me2', 'CTCF', 'H3K9ac']
+    # data_list = [False]
+    # exclude = True
+    # for i in range(1, 5):
+    #     data_list += [j for j in itertools.combinations(not_available, i)]
+    # print(data_list)
+
+    # print("MLP...")
+    # result_folder_mlp = Path('/net/data.isilon/ag-cherrmann/echernova/model_output/{0}'.format(cell_line))
+    # for exluded_features in data_list:
+    #     print(exluded_features)
+    #     mlp_model.mlp_result(feature_pos, feature_neg, result_folder_mlp, hist_list=exluded_features, exclude=exclude, date=date)
+    # plot_roc_folder(result_folder_mlp, result_folder_mlp/'{0}_mlp_ROC_curve_{1}_only_available_mods.png'.format(date, cell_line), 'ROC comparison: MLP on {0}'.format(cell_line))
+    
+    ## --------------------------------------------------- ##
+
+
     # print("RF...")
     # result_folder_rf = Path('0502_results_all_combis_MLP_v2')
     # for exluded_feature in exclude_list:

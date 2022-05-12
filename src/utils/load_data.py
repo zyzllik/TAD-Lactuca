@@ -69,17 +69,26 @@ def csv_load(feature_y, feature_n, hist_mod_list=False, exclusion=False):
     x_train, x_test, y_train, y_test = train_test_split(data, target, train_size=0.7, random_state=49)
     return (x_train, y_train), (x_test, y_test)
 
-def mlp(feature, exclude = False):
+def xlsx_load(feature, hist_mod_list=False, exclusion=False):
 
     df_y = pd.read_excel(feature, sheet_name='y').fillna(0)
     df_n = pd.read_excel(feature, sheet_name='n').fillna(0)
     df = df_y.append(df_n)
 
-    if exclude is not False:
-        for excluded_input in exclude:
-            filter_columns = [col_name for col_name in list(df.columns) if col_name.startswith(excluded_input)]
-        df = df.drop(filter_columns, axis=1)
-        print('columns: {}'.format(df.columns))
+    if hist_mod_list is not False:
+        if exclusion:
+            drop_columns = []
+            for hist_mod in hist_mod_list:
+                drop_columns += [col_name for col_name in list(df.columns) if hist_mod in col_name]
+            df = df.drop(drop_columns, axis=1)
+        elif not exclusion: # aka inclusion
+            keep_columns = ['chr', 'start', 'end']
+            for hist_mod in hist_mod_list:
+                keep_columns += [col_name for col_name in list(df.columns) if hist_mod in col_name]
+            keep_columns += ['label']
+            df = df[keep_columns]
+        
+    print('columns: {}'.format(df.columns))
     
     index = [i for i in range(4, df.shape[1])]
     data = np.matrix(df.iloc[:, index])
