@@ -47,21 +47,20 @@ def mlp(input):
 
 def mlp_result(feature_y, feature_n, result_folder, hist_list = False, exclude=False):
     # (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.mlp(feature=feature_data, exclude=excluded_data)
-    (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.csv_load(feature_y, feature_n, exclude=hist_list, exclusion=exclude)
+    (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.csv_load(feature_y, feature_n, hist_mod_list=hist_list, exclusion=exclude)
     clf_mlp = KerasClassifier(build_fn=mlp, input=x_train_mlp, epochs=epochs, batch_size=batch_size, verbose=0)
     clf_mlp.fit(x_train_mlp, y_train_mlp, validation_data=(x_test_mlp, y_test_mlp)) # history = 
     y_pred_mlp = clf_mlp.predict_proba(x_test_mlp)[:, 1]
     fpr_mlp, tpr_mlp, _ = roc_curve(y_test_mlp, y_pred_mlp)
-    if excluded_data is False:
+    if hist_list is False:
         file_name = '0502_MLP_full_model.npz'
     else:
-        hist_mod_list = excluded_data
-        file_name = '0502_MLP_exclude_{}'.format('_'.join(hist_mod_list))
+        file_name = '0502_MLP_exclude_{}'.format('_'.join(hist_list))
     # np.savetxt("0502_results_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp, y_pred_mlp, y_test_mlp], fmt='%.8f')
     if not result_folder.exists():
         result_folder.mkdir()
     np.savez(result_folder/"{}".format(file_name), fpr = fpr_mlp, tpr = tpr_mlp, pred = y_pred_mlp, target = y_test_mlp)
-    print('*******' * 3, '\n\t AUC {} = '.format(excluded_data), auc(fpr_mlp, tpr_mlp), '\n', '*******' * 3)
+    print('*******' * 3, '\n\t AUC {} = '.format(hist_list), auc(fpr_mlp, tpr_mlp), '\n', '*******' * 3)
 
 
 
