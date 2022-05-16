@@ -16,15 +16,18 @@ from model import mlp_model, rf_model, svm_model
 from utils.plots import *
 
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
+    # if len(sys.argv) == 1:
         # print("If you want to use your data, please run script as:  \n\t  python3 tad_lcatuca.py ['the path to the data']")
         # feature_data = "cache/E017/feature/bin_10_400kb.xlsx"
-        cell_line = 'HepG2'
-        date = '0512'
+    
+    if len(sys.argv) == 3:
+        cell_line = sys.argv[1]
+        date = sys.argv[2]
         feature_pos= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/{0}/positives_{1}.csv".format(cell_line, cell_line))
         feature_neg= Path("/net/data.isilon/ag-cherrmann/echernova/model_input/{0}/negatives_{1}.csv".format(cell_line, cell_line))
     else:
-        feature_data = sys.argv[1]
+        print("Incorrect number of inputs!")
+        # feature_data = sys.argv[1]
 
     ## ---- Test different cell lines --- ##
 
