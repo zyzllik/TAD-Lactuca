@@ -46,7 +46,8 @@ def mlp(input):
 
 
 def mlp_result(feature_data, result_folder, hist_list = False, exclude=False, date=None, input_type = 'csv'):
-    # (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.mlp(feature=feature_data, exclude=excluded_data)
+    
+    # Load data
     if input_type=='csv':
         feature_y, feature_n = feature_data
         (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.csv_load(feature_y, feature_n, hist_mod_list=hist_list, exclusion=exclude)
@@ -54,17 +55,24 @@ def mlp_result(feature_data, result_folder, hist_list = False, exclude=False, da
         (x_train_mlp, y_train_mlp), (x_test_mlp, y_test_mlp) = load_data.xlsx_load(feature_data, hist_mod_list=hist_list, exclusion=exclude)
     else:
         print("Wrong input type!")
+
+    # Train the model
     clf_mlp = KerasClassifier(build_fn=mlp, input=x_train_mlp, epochs=epochs, batch_size=batch_size, verbose=0)
     clf_mlp.fit(x_train_mlp, y_train_mlp, validation_data=(x_test_mlp, y_test_mlp)) # history = 
+    
+    # Test the model
     y_pred_mlp = clf_mlp.predict_proba(x_test_mlp)[:, 1]
     fpr_mlp, tpr_mlp, _ = roc_curve(y_test_mlp, y_pred_mlp)
+
+    # Generate file names and save the results
     if hist_list is False:
         file_name = '{0}_MLP_full_model.npz'.format(date)
     else:
         file_name = '{0}_MLP_exclude_{1}'.format(date, '_'.join(hist_list))
-    # np.savetxt("0502_results_MLP/{}".format(file_name), [fpr_mlp, tpr_mlp, y_pred_mlp, y_test_mlp], fmt='%.8f')
+
     if not result_folder.exists():
         result_folder.mkdir()
+
     np.savez(result_folder/"{}".format(file_name), fpr = fpr_mlp, tpr = tpr_mlp, pred = y_pred_mlp, target = y_test_mlp)
     print('*******' * 3, '\n\t AUC {} = '.format(hist_list), auc(fpr_mlp, tpr_mlp), '\n', '*******' * 3)
 
